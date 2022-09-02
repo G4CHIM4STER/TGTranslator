@@ -1,24 +1,25 @@
 # НЕ ЗАБУДЬ ПОМЕНЯТЬ ТОКЕН БОТА !
-from discord.ext import commands
+import discord
 
-bot = commands.Bot(command_prefix='$')
 role_list = []
 
-@bot.event # Выводит сообщение о начале работы бота
+intents = discord.Intents.default()
+intents.message_content = True
+
+client = discord.Client(intents=intents)
+
+@client.event # Выводит сообщение о начале работы бота
 async def on_ready():
-    print('We have logged in as {0.user}'.format(bot))
+    print('We have logged in as {0.user}'.format(client))
+    print(discord.Guild.members)
+    # for x in discord.Role.members:
+    #     print(discord.Guild.members[x])
     
-
-
-@bot.command()
-async def say(ctx, arg):
-    await ctx.send(arg)
-
 #region Основной функционал по приему комманд
 
-@bot.event
+@client.event
 async def on_message(message): # "Принимаем" сообщения
-    if message.author == bot.user:
+    if message.author == client.user:
         return
 
     if message.content.startswith('$привет'): # Приветствие
@@ -33,10 +34,4 @@ async def on_message(message): # "Принимаем" сообщения
 
 #endregion        
 
-@bot.command()
-async def test(ctx, *args):
-     await ctx.send('{} аргумента: {}'.format(len(args), ','.join(args)))
-
-
-
-bot.run('MTAwNzI4NTY1NjI3MzMwMTU5NQ.GdX3Mh.LAsDgiAiOOZbfl9cN2H_eKMKhOMWNGgiib7lKI')
+client.run('MTAwNzI4NTY1NjI3MzMwMTU5NQ.G-EsDM.c1gB7Mu6ggJtMCV-jwB1JxG4OTTW8XR4vVQaqE')
